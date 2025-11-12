@@ -14,7 +14,7 @@ const MedicationModel = {
 	 */
 	findUserMedications: async (userId) => {
 		const sql =
-			"SELECT me.id, me.user_id, me.physician_id, me.medication_name, me.dosage_strength, me.form_route, me.prescription_date, me.instructions, p.first_name AS physician_first_name, p.last_name AS physician_last_name FROM medications me JOIN physicians p ON me.physician_id = p.id WHERE me.user_id = ? ORDER BY prescription_date DESC";
+			"SELECT me.id, me.user_id, me.status, me.physician_id, me.medication_name, me.dosage_strength, me.form_route, me.prescription_date, me.instructions, p.first_name AS physician_first_name, p.last_name AS physician_last_name, me.refill_details as refill_details FROM medications me JOIN physicians p ON me.physician_id = p.id WHERE me.user_id = ? ORDER BY prescription_date DESC";
 		return query(sql, [userId]);
 	},
 

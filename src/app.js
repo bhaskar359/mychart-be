@@ -30,6 +30,7 @@ const corsOptions = {
 const authRoutes = require("./modules/auth/auth.routes");
 const testsRoutes = require("./modules/tests/tests.routes");
 const medicationsRoutes = require("./modules/medications/medications.routes");
+const appointmentsRoutes = require("./modules/appointments/appointments.routes");
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use(express.json()); // Body parser, reading data from body into req.body
 app.use(`${config.API_BASE_URL}/auth`, authRoutes);
 app.use(`${config.API_BASE_URL}/test`, testsRoutes);
 app.use(`${config.API_BASE_URL}/medications`, medicationsRoutes);
+app.use(`${config.API_BASE_URL}/appointments`, appointmentsRoutes);
 
 // 3. UNHANDLED ROUTES (404)
 // This catches all requests that didn't match any route
