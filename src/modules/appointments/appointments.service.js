@@ -16,6 +16,14 @@ exports.fetchUserAppointments = async (userId) => {
 	return appointments;
 };
 
+exports.fetchAppointmentById = async (id) => {
+	if (!id) {
+		throw new ApiError("ID is required to fetch appointments.", 400);
+	}
+	const appointment = await appointmentsModel.findAppointmentById(id);
+	return appointment;
+};
+
 /**
  * Creates and saves a new appointment entry in the database.
  * This function is responsible for generating the UUID.
@@ -34,7 +42,7 @@ exports.createAppointment = async (appointmentData) => {
 	};
 
 	// 3. Perform basic validation
-	if (!payload.user_id || !payload.physician_id || !payload.appointment_date) {
+	if (!payload.user_id || !payload.appointment_date) {
 		throw new ApiError(
 			"Missing required appointment fields (user, physician, or date).",
 			400

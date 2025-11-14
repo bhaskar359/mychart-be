@@ -29,6 +29,21 @@ const getAllAppointments = catchAsync(async (req, res, next) => {
 	});
 });
 
+const getAppointmentById = catchAsync(async (req, res, next) => {
+	const id = req.params.id;
+	if (!id) {
+		// This should theoretically be caught by protect middleware, but is a safe guard.
+		return next(new ApiError("Appointment ID not found.", 401));
+	}
+
+	const appointment = await appointmentsService.fetchAppointmentById(id);
+
+	res.status(200).json({
+		success: true,
+		data: { appointment },
+	});
+});
+
 // Handler for POST /api/v1/appointments
 const createAppointment = catchAsync(async (req, res, next) => {
 	// 1. Get User ID and request body
@@ -41,6 +56,7 @@ const createAppointment = catchAsync(async (req, res, next) => {
 	const payload = {
 		...body,
 		user_id: userId,
+		physician_id: "10000000-0000-0000-0000-000000000001",
 	};
 
 	// 3. Call the service to validate, generate UUID, and save
@@ -67,5 +83,7 @@ router.get("/fetch-all", getAllAppointments);
 // 2. Route to create a new appointment
 // POST /api/v1/appointments
 router.post("/create", createAppointment);
+
+router.get("/:id", getAppointmentById);
 
 module.exports = router;
